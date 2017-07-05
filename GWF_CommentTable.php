@@ -6,10 +6,10 @@ class GWF_CommentTable extends GDO
 	################
 	public function gdoCommentedObjectTable() {}
 
+	public function gdoEnabled() { return true; }
 	public function gdoAllowTitle() { return true; }
 	public function gdoAllowFiles() { return true; }
 	public function gdoMaxComments(GWF_User $user) { return 1; }
-	
 	###########
 	### GDO ###
 	###########
@@ -25,4 +25,18 @@ class GWF_CommentTable extends GDO
 		);
 	}
 	
+	### 
+	/**
+	 * @param string $className
+	 * @return GWF_CommentTable
+	 */
+	public static function getInstance(string $className)
+	{
+		$table = GDO::tableFor($className);
+		if (!($table instanceof GWF_CommentTable))
+		{
+			throw new GWF_Exception('err_comment_table', [htmle($className)]);
+		}
+		return $table;
+	}
 }

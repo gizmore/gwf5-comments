@@ -17,8 +17,9 @@ abstract class Comments_Write extends GWF_MethodForm
 	{
 		$gdo = GWF_Comment::table();
 		$form->addFields(array(
-			$gdo->gdoColumn('comment_title'),
+// 			$gdo->gdoColumn('comment_title'),
 			$gdo->gdoColumn('comment_message'),
+			$gdo->gdoColumn('comment_file'),
 			GDO_AntiCSRF::make(),
 			GDO_Submit::make(),
 		));
@@ -31,6 +32,10 @@ abstract class Comments_Write extends GWF_MethodForm
 	
 	public function execute()
 	{
+		if (GWF5::instance()->isAjax())
+		{
+			return parent::execute();
+		}
 		return $this->object->renderCard()->add(parent::execute());
 	}
 	

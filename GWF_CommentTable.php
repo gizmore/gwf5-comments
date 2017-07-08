@@ -20,8 +20,8 @@ class GWF_CommentTable extends GDO
 	public function gdoColumns()
 	{
 		return array(
+			GDO_Object::make('comment_id')->primary()->klass('GWF_Comment'),
 			GDO_Object::make('comment_object')->primary()->table($this->gdoCommentedObjectTable()),
-			GDO_Object::make('comment_id')->klass('GWF_Comment'),
 		);
 	}
 	

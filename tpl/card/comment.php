@@ -1,5 +1,5 @@
 <?php $gdo instanceof GWF_Comment; $user = GWF_User::current(); ?>
-<md-card flex layout-fill>
+<md-card>
   <md-card-title>
     <md-card-title-text>
       <span class="md-headline">
@@ -18,7 +18,7 @@
     </div>
     <?php endif; ?>
   </md-card-content>
-
+  <gwf-div></gwf-div>
   <md-card-actions layout="row" layout-align="end center">
     <?php echo GDO_EditButton::make()->href($gdo->hrefEdit())->writable($gdo->canEdit($user))->renderCell(); ?>
   </md-card-actions>

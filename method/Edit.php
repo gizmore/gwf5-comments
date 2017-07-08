@@ -10,6 +10,8 @@
  */
 final class Comments_Edit extends GWF_MethodForm
 {
+	public function getPermission() { return 'staff'; }
+	
 	/**
 	 * @var GWF_Comment
 	 */

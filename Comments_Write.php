@@ -16,12 +16,15 @@ abstract class Comments_Write extends GWF_MethodForm
 	public function createForm(GWF_Form $form)
 	{
 		$gdo = GWF_Comment::table();
+// 		$form->addField($gdo->gdoColumn('comment_title'));
+		$form->addField($gdo->gdoColumn('comment_message'));
+		if ($this->gdoCommentsTable()->gdoAllowFiles())
+		{
+			$form->addField($gdo->gdoColumn('comment_file'));
+		}
 		$form->addFields(array(
-// 			$gdo->gdoColumn('comment_title'),
-			$gdo->gdoColumn('comment_message'),
-			$gdo->gdoColumn('comment_file'),
-			GDO_AntiCSRF::make(),
 			GDO_Submit::make(),
+			GDO_AntiCSRF::make(),
 		));
 	}
 	
@@ -32,11 +35,8 @@ abstract class Comments_Write extends GWF_MethodForm
 	
 	public function execute()
 	{
-		if (GWF5::instance()->isAjax())
-		{
-			return parent::execute();
-		}
-		return $this->object->renderCard()->add(parent::execute());
+		$response = parent::execute();
+		return $this->object->renderCard()->add($response);
 	}
 	
 	public function successMessage()

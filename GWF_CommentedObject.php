@@ -20,7 +20,7 @@ trait GWF_CommentedObject
 		$comments = GWF_Comment::table();
 		$commentTable = $this->gdoCommentTable();
 		$commentTable instanceof GWF_CommentTable;
-		return $commentTable->select('gwf_comment.*')->joinObject('comment_id')->where("comment_object=".$this->getID())->exec();
+		return $commentTable->select('gwf_comment.*')->fetchTable(GWF_Comment::table())->joinObject('comment_id')->where("comment_object=".$this->getID());
 	}
 	
 	

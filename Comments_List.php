@@ -1,5 +1,5 @@
 <?php
-abstract class Comments_List extends GWF_MethodQueryList
+abstract class Comments_List extends GWF_MethodQueryCards
 {
 	/**
 	 * @return GWF_CommentTable

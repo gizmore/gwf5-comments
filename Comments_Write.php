@@ -9,9 +9,14 @@ abstract class Comments_Write extends GWF_MethodForm
 	public abstract function hrefList();
 
 	/**
-	 * @var GDO
+	 * @var GWF_CommentedObject
 	 */
 	protected $object;
+	
+	/**
+	 * @var GWF_Comment
+	 */
+	protected $oldComment;
 	
 	public function createForm(GWF_Form $form)
 	{
@@ -26,11 +31,20 @@ abstract class Comments_Write extends GWF_MethodForm
 			GDO_Submit::make(),
 			GDO_AntiCSRF::make(),
 		));
+		
+		if (1 === $this->gdoCommentsTable()->gdoMaxComments(GWF_User::current()))
+		{
+		    $form->withGDOValuesFrom($this->oldComment);
+		}
 	}
 	
 	public function init()
 	{
 		$this->object = $this->gdoCommentsTable()->gdoCommentedObjectTable()->find(Common::getRequestString('id'));
+		if (1 === $this->gdoCommentsTable()->gdoMaxComments(GWF_User::current()))
+		{
+		    $this->oldComment = $this->object->getUserComment();
+		}
 	}
 	
 	public function execute()
@@ -46,11 +60,18 @@ abstract class Comments_Write extends GWF_MethodForm
 	
 	public function formValidated(GWF_Form $form)
 	{
-		$comment = GWF_Comment::blank($form->values())->insert();
-		$entry = $this->gdoCommentsTable()->blank(array(
-			'comment_object' => $this->object->getID(),
-			'comment_id' => $comment->getID(),
-		))->insert();
+	    if ($this->oldComment)
+	    {
+	        $this->oldComment->saveVars($form->values());
+	    }
+	    else
+	    {
+    		$comment = GWF_Comment::blank($form->values())->insert();
+    		$entry = $this->gdoCommentsTable()->blank(array(
+    			'comment_object' => $this->object->getID(),
+    			'comment_id' => $comment->getID(),
+    		))->insert();
+	    }
 		return $this->successMessage()->add(GWF_Website::redirectMessage($this->hrefList()));
 	}
 }

@@ -9,7 +9,7 @@ abstract class Comments_Write extends GWF_MethodForm
 	public abstract function hrefList();
 
 	/**
-	 * @var GWF_CommentedObject
+	 * @var GDO
 	 */
 	protected $object;
 	
